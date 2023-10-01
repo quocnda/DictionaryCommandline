@@ -11,15 +11,18 @@ public class Dictionary {
     public static ArrayList<Word> wordadd = new ArrayList<>();
     private static final String fileDict = "src/resources/data/Dicdemo.txt";
     private static final String fileStars = "src/resources/data/MyWords.txt";
+
     public Dictionary() {
         insertFromFile(dictionaries, fileDict);
         insertFromFile(stars, fileStars);
     }
+
     public static void insertFromFile(ArrayList<Word> words, String path) {
         try {
             FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
             boolean b = true;
+            dictionaries.clear();
             String line;
             String tg;
             Word w = new Word();
@@ -40,6 +43,8 @@ public class Dictionary {
                         tg = line;
                         tg = tg.replace("@", "");
                         w.setTarget(tg);
+                    } else if (line.contains("/")) {
+                        w.setPronounce(line);
                     } else {
                         w.addLineExplain(line);
                     }
@@ -54,32 +59,41 @@ public class Dictionary {
             e.printStackTrace();
         }
     }
+
     public static void add() {
         exportToFile(dictionaries, fileDict);
     }
+
+    public static void add_starword(Word starw) {
+        stars.add(starw);
+        exportToFile(stars, fileStars);
+    }
+
     public static void showAllWords() {
         int numWordInDic = dictionaries.size();
-        for(int i = 0;i<numWordInDic ;i++) {
+        for (int i = 0; i < numWordInDic; i++) {
             String engWord = dictionaries.get(i).getTarget();
+            String engPro = dictionaries.get(i).getPronounce();
             String vieWord = dictionaries.get(i).getExplain();
-            System.out.printf("%d %s\t\t %s\n", i+1,engWord,vieWord  );
+            System.out.printf("%d %s\t %s\n %s", i + 1, engWord, engPro, vieWord);
         }
     }
-    public static void exportToFile(ArrayList<Word> words , String path) {
-        try{
+
+    public static void exportToFile(ArrayList<Word> words, String path) {
+        try {
             FileWriter fw = new FileWriter(path);
             BufferedWriter bw = new BufferedWriter(fw);
-            for(Word w : words) {
-                bw.write("@ " + w.getTarget() + "\n" + w.getExplain() + "\n");
+            for (Word w : words) {
+                System.out.println(w.getTarget() + " " + w.getTarget().length());
+                bw.write("@" + w.getTarget() + "\n" + w.getPronounce() + "\n" + w.getExplain());
             }
             bw.close();
             fw.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public static int getDictSize() {
         return dictionaries.size();
     }
@@ -99,7 +113,12 @@ public class Dictionary {
     public static ArrayList<Word> getStars() {
         return stars;
     }
-
+    public static void ImportFromOtherDic(String path) {
+        insertFromFile(dictionaries, path);
+    }
+    public static void ExportToOtherFile(String path) {
+        exportToFile(dictionaries, path);
+    }
     public void sortAndInsert(boolean isDict, Word new_word) {
         new_word.addLineExplain("\n");
         ArrayList<Word> words;
@@ -119,19 +138,34 @@ public class Dictionary {
                 break;
             }
         }
-        if(!add) {
+        if (!add) {
             words.add(new_word);
         }
         exportToFile(words, file);
     }
 
-    public void removeWord(int index) {
+    public static void removeWord(int index) {
         dictionaries.remove(index);
         exportToFile(dictionaries, fileDict);
     }
 
-    public void removeStar(int index) {
+    public static void removeStar(int index) {
         stars.remove(index);
         exportToFile(stars, fileStars);
+    }
+
+    public static String searchWord(String word) {
+        int numWordInDic = dictionaries.size();
+        String ans = "";
+        for (int i = 0; i < numWordInDic; i++) {
+            String engWord = dictionaries.get(i).getTarget();
+            if (engWord.equals(word)) {
+                String vieWord = dictionaries.get(i).getExplain();
+                ans = vieWord;
+                return ans;
+            }
+        }
+        ans = "Don't exit this word in Dictionary";
+        return ans;
     }
 }
