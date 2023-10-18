@@ -23,12 +23,10 @@ public class DictionaryManagement {
             Dictionary.add();
         }
     }
-
     public static void setStarWord(int index) {
         Word word_choose = Dictionary.getWord(index - 1);
         Dictionary.add_starword(word_choose);
     }
-
     public static void printMyStarWord() {
         ArrayList<Word> star = Dictionary.getStars();
         int numWordInDic = star.size();
@@ -39,23 +37,27 @@ public class DictionaryManagement {
             System.out.printf("%d %s\t %s\n %s\n", i + 1, engWord, engPro, vieWord);
         }
     }
-
     public static void showAllWords() {
         Dictionary.showAllWords();
     }
-
     public static void removeWord(int ind) {
-        Dictionary.removeWord(ind - 1);
+        int size = Dictionary.dictionaries.size();
+        if(ind > size ) {
+            System.out.println("The index is larger or smaller than size of Dictionary");
+        }
+        else {
+            Dictionary.removeWord(ind - 1);
+        }
     }
-
     public static void removestar(int ind) {
-        Dictionary.removeStar(ind - 1);
+         int size = Dictionary.stars.size();
+        if(ind > size ) {
+            System.out.println("The index is larger or smaller than size of MyStar Words");
+        }
+        else {
+     Dictionary.removeStar(ind - 1);
+        }
     }
-
-    public static void searchWord(String word) {
-
-    }
-
     public static void main(String[] args) {
         Dictionary tmp = new Dictionary();
         Scanner scan = new Scanner(System.in);

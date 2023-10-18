@@ -55,9 +55,6 @@ Tam biet
 @Name
 /neem/
 Ten
-@Checkvar
-/checkvar/
-ktra
 @Football
 /phut boon/
 Bong da

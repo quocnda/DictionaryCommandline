@@ -22,7 +22,6 @@ public class Dictionary {
             FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
             boolean b = true;
-            dictionaries.clear();
             String line;
             String tg;
             Word w = new Word();
@@ -114,6 +113,7 @@ public class Dictionary {
         return stars;
     }
     public static void ImportFromOtherDic(String path) {
+        dictionaries.clear();
         insertFromFile(dictionaries, path);
     }
     public static void ExportToOtherFile(String path) {
